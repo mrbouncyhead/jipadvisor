@@ -10,4 +10,5 @@ fabric.properties
 .project
 .settings
 .externalToolBuilders/
+target
 
