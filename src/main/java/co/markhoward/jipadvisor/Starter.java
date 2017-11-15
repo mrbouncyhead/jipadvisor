@@ -26,6 +26,7 @@ import co.markhoward.jipadvisor.database.JPAHelper;
 import co.markhoward.jipadvisor.security.SecurityController;
 import co.markhoward.jipadvisor.security.SecurityService;
 import co.markhoward.jipadvisor.user.UserRepo;
+import spark.Spark;
 
 public class Starter {
   public static void main(String[] arguments) {
@@ -38,6 +39,7 @@ public class Starter {
       CommandLine commandLine = parser.parse(options, arguments);
       String keyLocation = commandLine.getOptionValue("key");
       Starter start = new Starter();
+      Spark.staticFileLocation("jipadvisor-frontend");
       start.run(keyLocation);
     } catch (Exception exception) {
       log.error("An error has occurred while starting the application", exception);

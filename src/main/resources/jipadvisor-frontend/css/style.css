@@ -1,0 +1,7 @@
+body {
+    min-height:100%;
+}
+
+.has-bg-img { 
+  background: url('../img/couple.jpg')center center; background-size:cover;
+}

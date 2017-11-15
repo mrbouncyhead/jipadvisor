@@ -28,6 +28,10 @@ public class SecurityService {
 
       return register(user.get());
     });
+    log.info("Registering POST /login");
+    Spark.post("/login", (request, response) -> {
+      return "";
+    });
   }
 
   public String register(final User user) {
