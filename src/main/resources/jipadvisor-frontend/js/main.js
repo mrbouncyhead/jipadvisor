@@ -7,7 +7,23 @@ var loginView = {
 }
 
 var registerView = {
-  template: '#register-template'
+  template: '#register-template',
+  data: function () {
+    return {
+      email: '',
+      password:'',
+      confirmPassword:''
+    }
+  },
+  methods: {
+    register: function (event) {
+      if(this.password === "" || this.password !== this.confirmPassword) {
+        console.log('Invalid password');
+      }
+
+      debugger
+    }
+  }
 }
 
 Vue.component('main-menu', {

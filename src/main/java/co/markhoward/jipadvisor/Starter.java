@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import com.google.common.base.Strings;
 
 import co.markhoward.jipadvisor.database.JPAHelper;
 import co.markhoward.jipadvisor.security.SecurityController;
@@ -35,11 +36,22 @@ public class Starter {
     options.addOption(Option.builder().required().hasArg().longOpt("key")
         .desc("Adds the location of the keystore").build());
 
+    options.addOption(Option.builder().hasArg().longOpt("frontend")
+        .desc("Adds the location of the frontend files, if left blank will use builtin frontend")
+        .build());
+
     try {
       CommandLine commandLine = parser.parse(options, arguments);
-      String keyLocation = commandLine.getOptionValue("key");
+      String keyLocation = commandLine.getOptionValue(KEY);
+      String frontendLocation = commandLine.getOptionValue(FRONTEND, "");
       Starter start = new Starter();
-      Spark.staticFileLocation("jipadvisor-frontend");
+
+      if (Strings.isNullOrEmpty(frontendLocation)) {
+        Spark.staticFileLocation("jipadvisor-frontend");
+      } else {
+        Spark.externalStaticFileLocation(frontendLocation);
+      }
+
       start.run(keyLocation);
     } catch (Exception exception) {
       log.error("An error has occurred while starting the application", exception);
@@ -78,4 +90,7 @@ public class Starter {
   }
 
   private static final Logger log = LoggerFactory.getLogger(Starter.class);
+  private static final String KEY = "key";
+  private static final String FRONTEND = "frontend";
+
 }
