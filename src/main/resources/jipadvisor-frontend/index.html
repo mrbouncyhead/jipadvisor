@@ -1,25 +1,22 @@
 <!doctype html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <title>J|A</title>
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="An experimental dating app">
-  <meta name="author" content="Mark Howard">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
-    crossorigin="anonymous">
-  <link href="css/style.css" rel="stylesheet">
-</head>
-
-<body class ="text-light">
-  <div id="app">
-      <router-view></router-view>
-  </div>
-
-  <script type="text/x-template" id="register-template">
-    <div>
+  <head>
+    <meta charset="utf-8">
+    <title>J|A</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="An experimental dating app">
+    <meta name="author" content="Mark Howard">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+      crossorigin="anonymous">
+      <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body class ="text-light">
+      <div id="app">
+        <router-view></router-view>
+      </div>
+      <script type="text/x-template" id="register-template">
+      <div>
       <main-menu></main-menu>
       <div class="container-fluid">
         <div class="row">
@@ -48,74 +45,69 @@
         </div>
       </div>
     </div>
-  </script>
-
-  <script type="text/x-template" id="login-template">
+    </script>
+    <script type="text/x-template" id="login-template">
     <div>
-      <main-menu></main-menu>
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-sm">
-          </div>
-          <div class="col-sm vertical-center">
-            <form class="w-100">
-              <div class="form-group">
-                <label for="email">Email address</label>
-                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-              </div>
-              <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-              </div>
-              <button type="submit" class="btn btn-outline-light">Login</button>
-            </form>
-          </div>
-          <div class="col-sm vertical-center">
-            <img src="img/logo.png" alt="JipAdvisor logo">
-          </div>
+    <main-menu></main-menu>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm">
+        </div>
+        <div class="col-sm vertical-center">
+          <form class="w-100">
+            <div class="form-group">
+              <label for="email">Email address</label>
+              <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-outline-light">Login</button>
+          </form>
+        </div>
+        <div class="col-sm vertical-center">
+          <img src="img/logo.png" alt="JipAdvisor logo">
         </div>
       </div>
     </div>
+  </div>
   </script>
-
   <script type="text/x-template" id="default-template">
-    <div>
-      <main-menu></main-menu>
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-sm">
-          </div>
-          <div class="col-sm text-center">
-            <img src="img/logo.png" alt="JipAdvisor logo">
-          </div>
-          <div class="col-sm">
-          </div>
-        </div>
+  <div>
+  <main-menu></main-menu>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm">
+      </div>
+      <div class="col-sm text-center">
+        <img src="img/logo.png" alt="JipAdvisor logo">
+      </div>
+      <div class="col-sm">
       </div>
     </div>
-  </script>
-
-  <script type="text/x-template" id="menu-template">
-    <nav class="navbar navbar-dark navbar-expand-lg bg-dark justify-content-end">
-      <ul class="nav navbar-expand-lg justify-content-end navbar-dark bg-dark">
-        <li class="nav-item">
-          <a class="nav-link btn btn-outline-light" href="#/">Home</a>
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link btn btn-outline-light" to="/login">Login</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link btn btn-outline-light" to="/register">Register</router-link>
-        </li>
-      </ul>
-    </nav>
-  </script>
-  <script src="https://unpkg.com/vue"></script>
-  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
-  <script src="https://unpkg.com/vue-resource/dist/vue-resource.min.js"></script>
-  
-  <script src="js/main.js"></script>
+  </div>
+</div>
+</script>
+<script type="text/x-template" id="menu-template">
+<nav class="navbar navbar-dark navbar-expand-lg bg-dark justify-content-between">
+  <router-link class="navbar-brand" type="button" to="/#">J|A</router-link>
+  <div class="dropdown">
+    <small class="btn btn-outline-light btn-sm dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sign in or get an account</small>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+      <router-link class="dropdown-item" type="button" to="/login">login</router-link>
+      <router-link class="dropdown-item" type="button" to="/register">register</router-link>
+    </div>
+  </div>
+</nav>
+</script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+<script src="https://unpkg.com/vue-resource/dist/vue-resource.min.js"></script>
+<script src="js/main.js"></script>
 </body>
-
 </html>
