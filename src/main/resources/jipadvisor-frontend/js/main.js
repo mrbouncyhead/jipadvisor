@@ -17,29 +17,46 @@ var registerView = {
   },
   methods: {
     register: function (event) {
-      if(this.password === "" || this.password !== this.confirmPassword) {
-        console.log('Invalid password');
-      }
-
-      debugger
+      var user = {fullName:'', email:this.email, password:this.password};
+      this.$http.post('/register', user).then(function (response){
+        localStorage.setItem('token',response.body);
+      });
     }
   }
 }
 
 Vue.component('main-menu', {
   name: 'main-menu',
-  template: '#menu-template'
+  template: '#menu-template',
+  data: function () {
+    return {
+      token: localStorage.getItem('token');
+    }
+  },
+  methods: {
+    logout: function () {
+      localStorage.clear();
+      router.push('home');
+    }
+  }
 })
 
 var router = new VueRouter({
   routes: [{
-    path: '/', component: defaultView
+    path: '/',
+    redirect: '/home'
   },
   {
-    path: '/login', component: loginView
+    path: '/home',
+    component: defaultView
   },
   {
-    path: '/register', component: registerView
+    path: '/login',
+    component: loginView
+  },
+  {
+    path: '/register',
+    component: registerView
   }]
 })
 

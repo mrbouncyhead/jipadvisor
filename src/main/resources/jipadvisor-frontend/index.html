@@ -5,7 +5,7 @@
     <title>J|A</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="An experimental dating app">
+    <meta name="description" content="An experimental rating app">
     <meta name="author" content="Mark Howard">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
       crossorigin="anonymous">
@@ -92,12 +92,20 @@
 </script>
 <script type="text/x-template" id="menu-template">
 <nav class="navbar navbar-dark navbar-expand-lg bg-dark justify-content-between">
-  <router-link class="navbar-brand" to="/#">J|A</router-link>
-  <div class="dropdown">
-    <small class="btn btn-outline-light btn-sm dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sign in or get an account</small>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-      <router-link class="dropdown-item" to="/login">login</router-link>
-      <router-link class="dropdown-item" to="/register">register</router-link>
+  <router-link class="navbar-brand" to="home">J|A</router-link>
+  <div v-if="!email" class="dropdown">
+    <small class="btn btn-outline-light btn-sm dropdown-toggle" id="sign-in-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sign in or get an account</small>
+    <div class="dropdown-menu" aria-labelledby="sign-in-button">
+      <router-link class="dropdown-item" to="login">login</router-link>
+      <router-link class="dropdown-item" to="register">register</router-link>
+    </div>
+  </div>
+
+  <div v-if="email" class="dropdown">
+    <small class="btn btn-outline-light btn-sm dropdown-toggle" id="profile-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{email}}</small>
+    <div class="dropdown-menu" aria-labelledby="profile-button">
+      <router-link class="dropdown-item" to="profile">profile</router-link>
+      <a href="#" class="dropdown-item" v-on:click="logout">logout</a>
     </div>
   </div>
 </nav>
