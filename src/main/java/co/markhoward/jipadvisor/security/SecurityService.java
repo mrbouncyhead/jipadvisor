@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import co.markhoward.jipadvisor.services.Service;
 import co.markhoward.jipadvisor.services.WebServiceResponses;
 import co.markhoward.jipadvisor.services.WebServiceUtils;
 import co.markhoward.jipadvisor.user.User;
@@ -13,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import spark.Spark;
 
 @RequiredArgsConstructor
-public class SecurityService {
+public class SecurityService implements Service {
   private final SecurityController securityController;
   private final UserRepo userRepo;
 

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class WebServiceUtils {
@@ -18,6 +19,15 @@ public class WebServiceUtils {
       log.error("The json could not be converted into a java object", exception);
       return Optional.empty();
     }
+  }
+  
+  public static Optional<String> ObjectToJson (final Object object) {
+	  try {
+		return Optional.of(mapper.writeValueAsString(object));
+	} catch (JsonProcessingException e) {
+		log.error("The object could not be converted to json");
+		return Optional.empty();
+	}
   }
   
   private static final Logger log = LoggerFactory.getLogger(WebServiceUtils.class);

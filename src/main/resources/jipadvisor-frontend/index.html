@@ -93,7 +93,7 @@
 <script type="text/x-template" id="menu-template">
 <nav class="navbar navbar-dark navbar-expand-lg bg-dark justify-content-between">
   <router-link class="navbar-brand" to="home">J|A</router-link>
-  <div v-if="!email" class="dropdown">
+  <div v-if="!token" class="dropdown">
     <small class="btn btn-outline-light btn-sm dropdown-toggle" id="sign-in-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sign in or get an account</small>
     <div class="dropdown-menu" aria-labelledby="sign-in-button">
       <router-link class="dropdown-item" to="login">login</router-link>
@@ -101,8 +101,8 @@
     </div>
   </div>
 
-  <div v-if="email" class="dropdown">
-    <small class="btn btn-outline-light btn-sm dropdown-toggle" id="profile-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{email}}</small>
+  <div v-if="token" class="dropdown">
+    <small class="btn btn-outline-light btn-sm dropdown-toggle" id="profile-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></small>
     <div class="dropdown-menu" aria-labelledby="profile-button">
       <router-link class="dropdown-item" to="profile">profile</router-link>
       <a href="#" class="dropdown-item" v-on:click="logout">logout</a>

@@ -3,7 +3,13 @@ var defaultView = {
 }
 
 var loginView = {
-  template: '#login-template'
+  template: '#login-template',
+  data: function () {
+    return {
+      email: '',
+      password: ''
+    }
+  }
 }
 
 var registerView = {
@@ -17,7 +23,7 @@ var registerView = {
   },
   methods: {
     register: function (event) {
-      var user = {fullName:'', email:this.email, password:this.password};
+      var user = {email:this.email, password:this.password};
       this.$http.post('/register', user).then(function (response){
         localStorage.setItem('token',response.body);
       });
@@ -30,7 +36,7 @@ Vue.component('main-menu', {
   template: '#menu-template',
   data: function () {
     return {
-      token: localStorage.getItem('token');
+      token: localStorage.getItem('token')
     }
   },
   methods: {
@@ -61,5 +67,15 @@ var router = new VueRouter({
 })
 
 const app = new Vue({
-  router
+  router,
+  mounted: function () {
+    var token = localStorage.getItem('token');
+    if(token) {
+      Vue.http.headers.common['token'] = token;
+      Vue.http.get('/user').then(function (response) {
+        console.log(response.body);
+      });
+    }
+
+  }
 }).$mount('#app')
