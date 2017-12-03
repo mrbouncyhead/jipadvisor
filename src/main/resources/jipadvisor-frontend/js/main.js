@@ -11,6 +11,14 @@ var loginView = {
     }
   },
   methods: {
+    validateBeforeSubmit() {
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+          this.login();
+          return;
+        }
+      });
+    },
     login: function (event) {
       var user = {email:this.email, password:this.password};
       this.$http.post('/login', user).then(function (response){
@@ -30,7 +38,15 @@ var registerView = {
     }
   },
   methods: {
-    register: function (event) {
+    validateBeforeSubmit() {
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+          this.register();
+          return;
+        }
+      });
+    },
+    register: function () {
       var user = {email:this.email, password:this.password};
       this.$http.post('/register', user).then(function (response){
         localStorage.setItem('token',response.body);
@@ -75,6 +91,9 @@ var router = new VueRouter({
 })
 
 Vue.use(context);
+Vue.use(VeeValidate);
+Vue.use(VueRouter);
+
 const app = new Vue({
   router,
   mounted: function () {

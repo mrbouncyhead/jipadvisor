@@ -26,17 +26,21 @@
             <form class="w-100" novalidate>
               <div class="form-group">
                 <label for="email">Email address</label>
-                <input type="email" v-model="email" class="form-control" id="email" placeholder="Enter email">
+                <input v-validate="'required|email'" data-vv-delay="1000" name="email" type="email"
+                v-model="email" class="form-control" v-bind:class="{'is-invalid': errors.has('email')}" id="email" placeholder="Enter email" aria-describedby="emailHelp">
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                <div class="invalid-feedback">
+                  {{errors.first('email')}}
+                </div>
               </div>
               <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" v-model="password" class="form-control" id="password" placeholder="Password">
+                <input v-validate="'required|between:6,256'" data-vv-delay="1000" name="password" type="password" v-model="password" class="form-control" v-bind:class="{'is-invalid': errors.has('password')}" id="password" placeholder="Password">
+                <div class="invalid-feedback">
+                  {{errors.first('password')}}
+                </div>
               </div>
-              <div class="form-group">
-                <label for="confirm-password">Confirm password</label>
-                <input type="password" v-model="confirmPassword" class="form-control" id="confirm-password" placeholder="Confirm password">
-              </div>
-              <button type="submit" v-on:click="register" class="btn btn-outline-light">Register</button>
+              <button type="button" v-on:click="validateBeforeSubmit" class="btn btn-outline-light">Register</button>
             </form>
           </div>
           <div class="col-sm vertical-center">
@@ -57,14 +61,21 @@
           <form class="w-100" novalidate>
             <div class="form-group">
               <label for="email">Email address</label>
-              <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+              <input v-validate="'required|email'" data-vv-delay="1000" name="email" type="email"
+              v-model="email" class="form-control" v-bind:class="{'is-invalid': errors.has('email')}" id="email" placeholder="Enter email" aria-describedby="emailHelp">
               <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+              <div class="invalid-feedback">
+                {{errors.first('email')}}
+              </div>
             </div>
             <div class="form-group">
-              <label for="exampleInputPassword1">Password</label>
-              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+              <label for="password">Password</label>
+              <input v-validate="'required|between:6,256'" data-vv-delay="1000" name="password" type="password" v-model="password" class="form-control" v-bind:class="{'is-invalid': errors.has('password')}" id="password" placeholder="Password">
+              <div class="invalid-feedback">
+                {{errors.first('password')}}
+              </div>
             </div>
-            <button type="submit" v-on:click="login" class="btn btn-outline-light">Login</button>
+            <button type="button" v-on:click="validateBeforeSubmit" class="btn btn-outline-light">Login</button>
           </form>
         </div>
         <div class="col-sm vertical-center">
@@ -115,6 +126,7 @@
 <script src="https://unpkg.com/vue"></script>
 <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
 <script src="https://unpkg.com/vue-resource/dist/vue-resource.min.js"></script>
+<script src="https://unpkg.com/vee-validate@2.0.0-rc.7/dist/vee-validate.js"></script>
 <script src="js/context.js"></script>
 <script src="js/main.js"></script>
 </body>
