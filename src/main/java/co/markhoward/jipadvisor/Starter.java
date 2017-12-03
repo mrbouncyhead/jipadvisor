@@ -9,6 +9,7 @@ import java.security.PublicKey;
 import java.security.cert.Certificate;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 
@@ -22,11 +23,14 @@ import org.slf4j.LoggerFactory;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import com.google.common.base.Strings;
+import com.google.common.collect.Sets;
 
 import co.markhoward.jipadvisor.database.JPAHelper;
 import co.markhoward.jipadvisor.security.SecurityController;
 import co.markhoward.jipadvisor.security.SecurityService;
+import co.markhoward.jipadvisor.services.Service;
 import co.markhoward.jipadvisor.user.UserRepo;
+import co.markhoward.jipadvisor.user.UserService;
 import spark.Spark;
 
 public class Starter {
@@ -72,8 +76,11 @@ public class Starter {
     SecurityController securityController = new SecurityController(algorithm);
 
     // Loads services and registers routes
-    SecurityService securityService = new SecurityService(securityController, userRepo);
-    securityService.routes();
+    Set<Service> services = Sets.newHashSet();
+    services.add(new SecurityService(securityController, userRepo));
+    services.add(new UserService(securityController, userRepo));
+    for(Service service: services)
+    	service.routes();
 
     log.info("All services registered");
   }

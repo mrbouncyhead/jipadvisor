@@ -9,6 +9,14 @@ var loginView = {
       email: '',
       password: ''
     }
+  },
+  methods: {
+    login: function (event) {
+      var user = {email:this.email, password:this.password};
+      this.$http.post('/login', user).then(function (response){
+        console.log(response);
+      });
+    }
   }
 }
 
@@ -66,6 +74,7 @@ var router = new VueRouter({
   }]
 })
 
+Vue.use(context);
 const app = new Vue({
   router,
   mounted: function () {

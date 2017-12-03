@@ -18,7 +18,7 @@ public class UserServiceTest {
 	public void setUp () {
 		userRepo = mock(UserRepo.class);
 		securityController = mock(SecurityController.class);
-		userService = new UserService(userRepo, securityController);
+		userService = new UserService(securityController, userRepo);
 	}
 	
 	@Test

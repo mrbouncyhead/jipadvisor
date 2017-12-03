@@ -23,7 +23,7 @@
           <div class="col-sm">
           </div>
           <div class="col-sm vertical-center">
-            <form class="w-100">
+            <form class="w-100" novalidate>
               <div class="form-group">
                 <label for="email">Email address</label>
                 <input type="email" v-model="email" class="form-control" id="email" placeholder="Enter email">
@@ -54,7 +54,7 @@
         <div class="col-sm">
         </div>
         <div class="col-sm vertical-center">
-          <form class="w-100">
+          <form class="w-100" novalidate>
             <div class="form-group">
               <label for="email">Email address</label>
               <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
@@ -64,7 +64,7 @@
               <label for="exampleInputPassword1">Password</label>
               <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
             </div>
-            <button type="submit" class="btn btn-outline-light">Login</button>
+            <button type="submit" v-on:click="login" class="btn btn-outline-light">Login</button>
           </form>
         </div>
         <div class="col-sm vertical-center">
@@ -100,7 +100,6 @@
       <router-link class="dropdown-item" to="register">register</router-link>
     </div>
   </div>
-
   <div v-if="token" class="dropdown">
     <small class="btn btn-outline-light btn-sm dropdown-toggle" id="profile-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></small>
     <div class="dropdown-menu" aria-labelledby="profile-button">
@@ -116,6 +115,7 @@
 <script src="https://unpkg.com/vue"></script>
 <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
 <script src="https://unpkg.com/vue-resource/dist/vue-resource.min.js"></script>
+<script src="js/context.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

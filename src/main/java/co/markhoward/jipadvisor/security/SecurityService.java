@@ -21,23 +21,36 @@ public class SecurityService implements Service {
   public void routes() {
     log.info("Registering POST /register");
     Spark.post("/register", (request, response) -> {
-      Optional<User> user = WebServiceUtils.jsonToObject(request.body(), User.class);
-      if (!user.isPresent()) {
+      Optional<User> result = WebServiceUtils.jsonToObject(request.body(), User.class);
+      if (!result.isPresent()) {
         response.status(401);
         return WebServiceResponses.ERROR_401;
       }
 
-      return register(user.get());
+      User user = result.get();
+      user.setPassword(PasswordHasher.hashPassword(user.getPassword()));
+      userRepo.save(user);
+      return securityController.generateToken(user.getId());
     });
-    log.info("Registering POST /login");
-    Spark.post("/login", (request, response) -> {
-      return "";
-    });
-  }
 
-  public String register(final User user) {
-    userRepo.save(user);    
-    return securityController.generateToken(user.getId());
+    log.info("Registering GET /login");
+    Spark.post("/login", (request, response) -> {
+      Optional<User> result = WebServiceUtils.jsonToObject(request.body(), User.class);
+      if (!result.isPresent()) {
+        response.status(401);
+        return WebServiceResponses.ERROR_401;
+      }
+
+      User user = result.get();
+      user.setPassword(PasswordHasher.hashPassword(user.getPassword()));
+      Optional<User> savedUserResult = userRepo.getUniqueWhereProperty(User.EMAIL, user.getEmail());
+      if (!savedUserResult.isPresent()) {
+        response.status(401);
+        return WebServiceResponses.ERROR_401;
+      }
+
+      return securityController.generateToken(user.getId());
+    });
   }
 
   private final Logger log = LoggerFactory.getLogger(getClass());

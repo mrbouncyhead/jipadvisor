@@ -13,8 +13,8 @@ import spark.Spark;
 
 @RequiredArgsConstructor
 public class UserService implements Service {
-	private final UserRepo userRepo;
 	private final SecurityController securityController;
+	private final UserRepo userRepo;
 
 	@Override
 	public void routes() {
@@ -22,16 +22,16 @@ public class UserService implements Service {
 		Spark.get("/user", (request, response) -> {
 			String token = request.headers("token");
 			Optional<Integer> userIdResult = securityController.getUserIdFromToken(token);
-			if(!userIdResult.isPresent()) {
+			if (!userIdResult.isPresent()) {
 				response.status(401);
 				return "User cannot be found";
 			}
-			
+
 			User user = userRepo.get(userIdResult.get());
 			Optional<String> result = WebServiceUtils.ObjectToJson(user);
-			if(result.isPresent())
+			if (result.isPresent())
 				return result.get();
-			
+
 			response.status(500);
 			return "There was an error getting the user";
 		});

@@ -16,18 +16,14 @@ public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
-  
-  @NotNull
-  @Size(min = 3, max = 256, message = "Name must be between 3 and 256 characters")
-  private String fullName;
-  
+
   @Email
   @Size(min = 3, max = 256, message = "Email must be between 3 and 256 characters")
   private String email;
-  
+
   @NotNull
   private String password;
-  
+
   public static String USER_ID = "userId";
-  
+  public static final String EMAIL = "email";
 }
