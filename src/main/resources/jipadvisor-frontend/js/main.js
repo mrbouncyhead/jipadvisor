@@ -58,9 +58,17 @@ var registerView = {
 Vue.component('main-menu', {
   name: 'main-menu',
   template: '#menu-template',
+  mounted: function () {
+    this.$http.get('/user').then(function (response) {
+      this.user = response.body;
+    });
+  },
   data: function () {
     return {
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      user: {
+        email: ''
+      }
     }
   },
   methods: {
@@ -88,22 +96,16 @@ var router = new VueRouter({
     path: '/register',
     component: registerView
   }]
-})
+});
 
-Vue.use(context);
 Vue.use(VeeValidate);
 Vue.use(VueRouter);
 
 const app = new Vue({
   router,
-  mounted: function () {
+  beforeCreate: function () {
     var token = localStorage.getItem('token');
-    if(token) {
+    if(token)
       Vue.http.headers.common['token'] = token;
-      Vue.http.get('/user').then(function (response) {
-        console.log(response.body);
-      });
-    }
-
-  }
+  },
 }).$mount('#app')

@@ -35,7 +35,7 @@
               </div>
               <div class="form-group">
                 <label for="password">Password</label>
-                <input v-validate="'required|between:6,256'" data-vv-delay="1000" name="password" type="password" v-model="password" class="form-control" v-bind:class="{'is-invalid': errors.has('password')}" id="password" placeholder="Password">
+                <input v-validate="'required|min:4|max:256'" data-vv-delay="1000" name="password" type="password" v-model="password" class="form-control" v-bind:class="{'is-invalid': errors.has('password')}" id="password" placeholder="Password">
                 <div class="invalid-feedback">
                   {{errors.first('password')}}
                 </div>
@@ -70,7 +70,7 @@
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input v-validate="'required|between:6,256'" data-vv-delay="1000" name="password" type="password" v-model="password" class="form-control" v-bind:class="{'is-invalid': errors.has('password')}" id="password" placeholder="Password">
+              <input v-validate="'required|min:4|max:256'" data-vv-delay="1000" name="password" type="password" v-model="password" class="form-control" v-bind:class="{'is-invalid': errors.has('password')}" id="password" placeholder="Password">
               <div class="invalid-feedback">
                 {{errors.first('password')}}
               </div>
@@ -112,7 +112,7 @@
     </div>
   </div>
   <div v-if="token" class="dropdown">
-    <small class="btn btn-outline-light btn-sm dropdown-toggle" id="profile-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></small>
+    <small class="btn btn-outline-light btn-sm dropdown-toggle" id="profile-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{user.email}}</small>
     <div class="dropdown-menu" aria-labelledby="profile-button">
       <router-link class="dropdown-item" to="profile">profile</router-link>
       <a href="#" class="dropdown-item" v-on:click="logout">logout</a>
@@ -127,7 +127,6 @@
 <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
 <script src="https://unpkg.com/vue-resource/dist/vue-resource.min.js"></script>
 <script src="https://unpkg.com/vee-validate@2.0.0-rc.7/dist/vee-validate.js"></script>
-<script src="js/context.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
