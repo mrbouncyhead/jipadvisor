@@ -104,15 +104,15 @@
 <script type="text/x-template" id="menu-template">
 <nav class="navbar navbar-dark navbar-expand-lg bg-dark justify-content-between">
   <router-link class="navbar-brand" to="home">J|A</router-link>
-  <div v-if="!token" class="dropdown">
+  <div v-if="!email" class="dropdown">
     <small class="btn btn-outline-light btn-sm dropdown-toggle" id="sign-in-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sign in or get an account</small>
     <div class="dropdown-menu" aria-labelledby="sign-in-button">
       <router-link class="dropdown-item" to="login">login</router-link>
       <router-link class="dropdown-item" to="register">register</router-link>
     </div>
   </div>
-  <div v-if="token" class="dropdown">
-    <small class="btn btn-outline-light btn-sm dropdown-toggle" id="profile-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{user.email}}</small>
+  <div v-if="email" class="dropdown">
+    <small class="btn btn-outline-light btn-sm dropdown-toggle" id="profile-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{email}}</small>
     <div class="dropdown-menu" aria-labelledby="profile-button">
       <router-link class="dropdown-item" to="profile">profile</router-link>
       <a href="#" class="dropdown-item" v-on:click="logout">logout</a>
@@ -127,6 +127,7 @@
 <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
 <script src="https://unpkg.com/vue-resource/dist/vue-resource.min.js"></script>
 <script src="https://unpkg.com/vee-validate@2.0.0-rc.7/dist/vee-validate.js"></script>
+<script src="https://unpkg.com/vuex@3.0.1/dist/vuex.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

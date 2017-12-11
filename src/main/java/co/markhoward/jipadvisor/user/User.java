@@ -1,5 +1,6 @@
 package co.markhoward.jipadvisor.user;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +20,7 @@ public class User {
 
   @Email
   @Size(min = 3, max = 256, message = "Email must be between 3 and 256 characters")
+  @Column(unique = true)
   private String email;
 
   @NotNull

@@ -14,16 +14,20 @@ var loginView = {
     validateBeforeSubmit() {
       this.$validator.validateAll().then((result) => {
         if (result) {
-          this.login();
-          return;
+          this.login()
+          return
         }
       });
     },
     login: function (event) {
       var user = {email:this.email, password:this.password};
       this.$http.post('/login', user).then(function (response){
-        console.log(response);
-      });
+        console.log(response)
+      }, response => {
+        this.email = ''
+        this.password = ''
+        alert('Invalid username or password')
+      })
     }
   }
 }
@@ -41,7 +45,7 @@ var registerView = {
     validateBeforeSubmit() {
       this.$validator.validateAll().then((result) => {
         if (result) {
-          this.register();
+          this.register()
           return;
         }
       });
@@ -49,7 +53,11 @@ var registerView = {
     register: function () {
       var user = {email:this.email, password:this.password};
       this.$http.post('/register', user).then(function (response){
-        localStorage.setItem('token',response.body);
+        localStorage.setItem('token',response.body)
+      }, response => {
+        this.email = ''
+        this.password = ''
+        console.log(response)
       });
     }
   }
@@ -58,23 +66,15 @@ var registerView = {
 Vue.component('main-menu', {
   name: 'main-menu',
   template: '#menu-template',
-  mounted: function () {
-    this.$http.get('/user').then(function (response) {
-      this.user = response.body;
-    });
-  },
-  data: function () {
-    return {
-      token: localStorage.getItem('token'),
-      user: {
-        email: ''
-      }
+  computed: {
+    email () {
+      return this.$store.state.user.email
     }
   },
   methods: {
     logout: function () {
-      localStorage.clear();
-      router.push('home');
+      localStorage.clear()
+      router.push('home')
     }
   }
 })
@@ -98,14 +98,29 @@ var router = new VueRouter({
   }]
 });
 
+const store = new Vuex.Store({
+  state: {
+    user: {
+      email: '',
+      loggedIn: false
+    }
+  }
+  
+})
+
 Vue.use(VeeValidate);
 Vue.use(VueRouter);
 
 const app = new Vue({
   router,
+  store,
   beforeCreate: function () {
-    var token = localStorage.getItem('token');
-    if(token)
-      Vue.http.headers.common['token'] = token;
+    var token = localStorage.getItem('token')
+    if(token) {
+      Vue.http.headers.common['token'] = token
+      this.$http.get('/user').then(function (response) {
+        this.user = response.body
+      });
+    }
   },
 }).$mount('#app')

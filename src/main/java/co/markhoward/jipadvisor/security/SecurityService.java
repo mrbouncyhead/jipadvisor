@@ -29,6 +29,12 @@ public class SecurityService implements Service {
 
       User user = result.get();
       user.setPassword(PasswordHasher.hashPassword(user.getPassword()));
+      Optional<User> savedUserResult = userRepo.getUniqueWhereProperty(User.EMAIL, user.getEmail());
+      if (savedUserResult.isPresent()) {
+        response.status(409);
+        return WebServiceResponses.ERROR_409;
+      }
+
       userRepo.save(user);
       return securityController.generateToken(user.getId());
     });
