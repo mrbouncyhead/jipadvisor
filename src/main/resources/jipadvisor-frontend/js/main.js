@@ -22,13 +22,32 @@ var loginView = {
     login: function (event) {
       var user = {email:this.email, password:this.password};
       this.$http.post('/login', user).then(function (response){
-        console.log(response)
+        var token = response.body;
+        console.log('setting token' + token)
+        localStorage.setItem('token',token)
+        Vue.http.headers.common['token'] = token
+        router.push('profile')
       }, response => {
         this.email = ''
         this.password = ''
         alert('Invalid username or password')
       })
     }
+  }
+}
+
+var profileView = {
+  template: '#profile-template',
+  mounted: function () {
+    this.$http.get('/user').then(function (response) {
+      var email = response.body.email;
+      console.log('user logged in: '+response.body)
+      this.$store.commit('loggedIn', true)
+      this.$store.commit('email', email)
+    }, response => {
+      router.push('login')
+      alert('Please login first')
+    });
   }
 }
 
@@ -53,11 +72,15 @@ var registerView = {
     register: function () {
       var user = {email:this.email, password:this.password};
       this.$http.post('/register', user).then(function (response){
-        localStorage.setItem('token',response.body)
+        var token = response.body;
+        console.log('setting token' + token)
+        localStorage.setItem('token',token)
+        Vue.http.headers.common['token'] = token
+        router.push('profile')
       }, response => {
         this.email = ''
         this.password = ''
-        console.log(response)
+        alert(response.body)
       });
     }
   }
@@ -74,6 +97,8 @@ Vue.component('main-menu', {
   methods: {
     logout: function () {
       localStorage.clear()
+      this.$store.commit('loggedIn', false)
+      this.$store.commit('email', '')
       router.push('home')
     }
   }
@@ -95,7 +120,12 @@ var router = new VueRouter({
   {
     path: '/register',
     component: registerView
-  }]
+  },
+  {
+    path: '/profile',
+    component: profileView
+  }
+  ]
 });
 
 const store = new Vuex.Store({
@@ -104,8 +134,15 @@ const store = new Vuex.Store({
       email: '',
       loggedIn: false
     }
+  },
+  mutations: {
+    loggedIn (state, isLoggedIn) {
+      state.user.loggedIn = isLoggedIn
+    },
+    email (state, email) {
+      state.user.email = email
+    }
   }
-  
 })
 
 Vue.use(VeeValidate);
@@ -117,10 +154,8 @@ const app = new Vue({
   beforeCreate: function () {
     var token = localStorage.getItem('token')
     if(token) {
+      console.log('setting token');
       Vue.http.headers.common['token'] = token
-      this.$http.get('/user').then(function (response) {
-        this.user = response.body
-      });
     }
   },
 }).$mount('#app')

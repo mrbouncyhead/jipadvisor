@@ -8,6 +8,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -22,7 +25,10 @@ public class BaseRepo<T> {
    * @return The entity with the id populated
    */
   public T save(T entity) {
+    entityManager.getTransaction().begin();
     entityManager.persist(entity);
+    entityManager.getTransaction().commit();
+    log.info("Saved entity with: {}", entity);
     return entity;
   }
 
@@ -32,7 +38,9 @@ public class BaseRepo<T> {
    * @param entity The entity to delete
    */
   public void delete(final T entity) {
+    entityManager.getTransaction().begin();
     entityManager.remove(entity);
+    entityManager.getTransaction().commit();
   }
 
   /**
@@ -75,4 +83,6 @@ public class BaseRepo<T> {
     criteria.where(builder.equal(root.get(property), value));
     return entityManager.createQuery(criteria).getResultList();
   }
+
+  private final Logger log = LoggerFactory.getLogger(this.getClass());
 }

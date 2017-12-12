@@ -2,6 +2,9 @@ package co.markhoward.jipadvisor.security;
 
 import java.util.Optional;
 
+import javax.persistence.RollbackException;
+import javax.validation.ConstraintViolationException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,13 +32,13 @@ public class SecurityService implements Service {
 
       User user = result.get();
       user.setPassword(PasswordHasher.hashPassword(user.getPassword()));
-      Optional<User> savedUserResult = userRepo.getUniqueWhereProperty(User.EMAIL, user.getEmail());
-      if (savedUserResult.isPresent()) {
+      try {
+        userRepo.save(user);
+      } catch (ConstraintViolationException exception) {
         response.status(409);
         return WebServiceResponses.ERROR_409;
       }
 
-      userRepo.save(user);
       return securityController.generateToken(user.getId());
     });
 
@@ -50,12 +53,18 @@ public class SecurityService implements Service {
       User user = result.get();
       user.setPassword(PasswordHasher.hashPassword(user.getPassword()));
       Optional<User> savedUserResult = userRepo.getUniqueWhereProperty(User.EMAIL, user.getEmail());
-      if (!savedUserResult.isPresent()) {
+      if (!savedUserResult.isPresent()
+          || !savedUserResult.get().getPassword().equals(user.getPassword())) {
         response.status(401);
         return WebServiceResponses.ERROR_401;
       }
 
       return securityController.generateToken(user.getId());
+    });
+
+    Spark.exception(RollbackException.class, (exception, request, response) -> {
+      response.status(409);
+      response.body("User is invalid or already exists");
     });
   }
 
