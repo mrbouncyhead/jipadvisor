@@ -59,7 +59,8 @@ public class SecurityService implements Service {
         return WebServiceResponses.ERROR_401;
       }
 
-      return securityController.generateToken(user.getId());
+      int userId = savedUserResult.get().getId();
+      return securityController.generateToken(userId);
     });
 
     Spark.exception(RollbackException.class, (exception, request, response) -> {

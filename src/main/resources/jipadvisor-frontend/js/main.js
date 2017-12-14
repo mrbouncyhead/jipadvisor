@@ -23,10 +23,9 @@ var loginView = {
       var user = {email:this.email, password:this.password};
       this.$http.post('/login', user).then(function (response){
         var token = response.body;
-        console.log('setting token' + token)
         localStorage.setItem('token',token)
         Vue.http.headers.common['token'] = token
-        router.push('profile')
+        router.push('profiles')
       }, response => {
         this.email = ''
         this.password = ''
@@ -36,12 +35,11 @@ var loginView = {
   }
 }
 
-var profileView = {
-  template: '#profile-template',
+var profilesView = {
+  template: '#profiles-template',
   mounted: function () {
     this.$http.get('/user').then(function (response) {
       var email = response.body.email;
-      console.log('user logged in: '+response.body)
       this.$store.commit('loggedIn', true)
       this.$store.commit('email', email)
     }, response => {
@@ -73,10 +71,9 @@ var registerView = {
       var user = {email:this.email, password:this.password};
       this.$http.post('/register', user).then(function (response){
         var token = response.body;
-        console.log('setting token' + token)
         localStorage.setItem('token',token)
         Vue.http.headers.common['token'] = token
-        router.push('profile')
+        router.push('profiles')
       }, response => {
         this.email = ''
         this.password = ''
@@ -122,8 +119,8 @@ var router = new VueRouter({
     component: registerView
   },
   {
-    path: '/profile',
-    component: profileView
+    path: '/profiles',
+    component: profilesView
   }
   ]
 });
@@ -154,7 +151,6 @@ const app = new Vue({
   beforeCreate: function () {
     var token = localStorage.getItem('token')
     if(token) {
-      console.log('setting token');
       Vue.http.headers.common['token'] = token
     }
   },
