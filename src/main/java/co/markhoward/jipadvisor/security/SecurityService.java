@@ -39,7 +39,9 @@ public class SecurityService implements Service {
         return WebServiceResponses.ERROR_409;
       }
 
-      return securityController.generateToken(user.getId());
+      Optional<String> responseJson =
+          WebServiceUtils.ObjectToJson(createUserDetails(user.getId(), user.getEmail()));
+      return responseJson.get();
     });
 
     log.info("Registering GET /login");
@@ -59,14 +61,24 @@ public class SecurityService implements Service {
         return WebServiceResponses.ERROR_401;
       }
 
-      int userId = savedUserResult.get().getId();
-      return securityController.generateToken(userId);
+      User savedUser = savedUserResult.get();
+      Optional<String> responseJson =
+          WebServiceUtils.ObjectToJson(createUserDetails(savedUser.getId(), savedUser.getEmail()));
+      return responseJson.get();
     });
 
     Spark.exception(RollbackException.class, (exception, request, response) -> {
       response.status(409);
       response.body("User is invalid or already exists");
     });
+  }
+
+  private UserDetails createUserDetails(final int id, final String email) {
+    UserDetails userDetails = new UserDetails();
+    userDetails.setId(id);
+    userDetails.setToken(securityController.generateToken(id));
+    userDetails.setEmail(email);
+    return userDetails;
   }
 
   private final Logger log = LoggerFactory.getLogger(getClass());

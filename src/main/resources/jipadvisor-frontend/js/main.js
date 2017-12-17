@@ -22,9 +22,11 @@ var loginView = {
     login: function (event) {
       var user = {email:this.email, password:this.password};
       this.$http.post('/login', user).then(function (response){
-        var token = response.body;
-        localStorage.setItem('token',token)
-        Vue.http.headers.common['token'] = token
+    	var userDetails = response.body
+        localStorage.setItem('token',userDetails.token)
+        Vue.http.headers.common['token'] = userDetails.token
+        this.$store.commit('loggedIn', true)
+        this.$store.commit('email', userDetails.email)
         router.push('profiles')
       }, response => {
         this.email = ''
@@ -37,15 +39,17 @@ var loginView = {
 
 var profilesView = {
   template: '#profiles-template',
-  mounted: function () {
-    this.$http.get('/user').then(function (response) {
-      var email = response.body.email;
-      this.$store.commit('loggedIn', true)
-      this.$store.commit('email', email)
+  data: function () {
+    return {
+      profiles: []
+    }
+  },
+  mounted() {
+    this.$http.get('/profile').then(function (response){
+      this.profiles = response.body
     }, response => {
-      router.push('login')
-      alert('Please login first')
-    });
+      console.log("An error has occurred!")
+    })
   }
 }
 
@@ -70,15 +74,17 @@ var registerView = {
     register: function () {
       var user = {email:this.email, password:this.password};
       this.$http.post('/register', user).then(function (response){
-        var token = response.body;
-        localStorage.setItem('token',token)
-        Vue.http.headers.common['token'] = token
+        var userDetails = response.body
+        localStorage.setItem('token',userDetails.token)
+        Vue.http.headers.common['token'] = userDetails.token
+        this.$store.commit('loggedIn', true)
+        this.$store.commit('email', userDetails.email)
         router.push('profiles')
       }, response => {
         this.email = ''
         this.password = ''
         alert(response.body)
-      });
+      })
     }
   }
 }

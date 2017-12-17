@@ -8,7 +8,6 @@ background: url(../img/couple.jpg) no-repeat center center fixed;
 -moz-background-size: cover;
 -o-background-size: cover;
 background-size: cover;
-overflow:hidden;
 min-height:100%;
 }
 .vertical-center {

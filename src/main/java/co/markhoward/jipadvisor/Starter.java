@@ -2,6 +2,7 @@ package co.markhoward.jipadvisor;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.PrivateKey;
@@ -9,6 +10,7 @@ import java.security.PublicKey;
 import java.security.cert.Certificate;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -22,13 +24,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
+import com.google.common.io.Resources;
 
 import co.markhoward.jipadvisor.database.JPAHelper;
 import co.markhoward.jipadvisor.security.SecurityController;
 import co.markhoward.jipadvisor.security.SecurityService;
 import co.markhoward.jipadvisor.services.Service;
+import co.markhoward.jipadvisor.services.WebServiceUtils;
+import co.markhoward.jipadvisor.user.ProfileRepo;
+import co.markhoward.jipadvisor.user.ProfileService;
+import co.markhoward.jipadvisor.user.User;
 import co.markhoward.jipadvisor.user.UserRepo;
 import co.markhoward.jipadvisor.user.UserService;
 import spark.Spark;
@@ -68,6 +76,7 @@ public class Starter {
     // Loads database
     EntityManager entityManager = JPAHelper.getEntityManagerFactory().createEntityManager();
     UserRepo userRepo = new UserRepo(entityManager);
+    ProfileRepo profileRepo = new ProfileRepo(entityManager);
 
     // Loads security classes
     KeyPair keyPair = loadKeyPair(keyLocation);
@@ -79,10 +88,22 @@ public class Starter {
     Set<Service> services = Sets.newHashSet();
     services.add(new SecurityService(securityController, userRepo));
     services.add(new UserService(securityController, userRepo));
-    for(Service service: services)
-    	service.routes();
+    services.add(new ProfileService(securityController, profileRepo));
+    for (Service service : services)
+      service.routes();
 
     log.info("All services registered");
+    addExamples(userRepo, profileRepo);
+  }
+
+  private void addExamples(final UserRepo userRepo, final ProfileRepo profileRepo)
+      throws IOException {
+
+    List<User> users = WebServiceUtils.jsonToList(
+        Resources.toString(Resources.getResource("examples.json"), Charsets.UTF_8), User.class);
+
+    for (User user : users)
+      userRepo.save(user);
   }
 
   private KeyPair loadKeyPair(final String keyLocation) throws Exception {
