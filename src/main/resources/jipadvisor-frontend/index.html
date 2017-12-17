@@ -21,9 +21,7 @@
       <main-menu></main-menu>
       <div class="container-fluid">
         <div class="row">
-          <div class="col-sm">
-          </div>
-          <div class="col-sm vertical-center">
+          <div class="col-md-6 offset-md-3 vertical-center">
             <form class="w-100" novalidate>
               <div class="form-group">
                 <label for="email">Email address</label>
@@ -44,7 +42,7 @@
               <button type="button" v-on:click="validateBeforeSubmit" class="btn btn-outline-light">Register</button>
             </form>
           </div>
-          <div class="col-sm vertical-center">
+          <div class="col-md-3 d-none d-lg-block d-xl-none">
             <img src="img/logo.png" alt="JipAdvisor logo">
           </div>
         </div>
@@ -56,9 +54,7 @@
     <main-menu></main-menu>
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm">
-        </div>
-        <div class="col-sm vertical-center">
+        <div class="col-md-6 offset-md-3 vertical-center">
           <form class="w-100" novalidate>
             <div class="form-group">
               <label for="email">Email address</label>
@@ -79,7 +75,7 @@
             <button type="button" v-on:click="validateBeforeSubmit" class="btn btn-outline-light">Login</button>
           </form>
         </div>
-        <div class="col-sm vertical-center">
+        <div class="col-md-3 d-block d-lg-block d-xl-none">
           <img src="img/logo.png" alt="JipAdvisor logo">
         </div>
       </div>
@@ -115,6 +111,7 @@
   <div v-if="email" class="dropdown">
     <small class="btn btn-outline-light btn-sm dropdown-toggle" id="profile-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{email}}</small>
     <div class="dropdown-menu" aria-labelledby="profile-button">
+	  <router-link class="dropdown-item" to="profiles">browse profiles</router-link>
       <router-link class="dropdown-item" to="profile">profile</router-link>
       <a href="#" class="dropdown-item" v-on:click="logout">logout</a>
     </div>
@@ -159,6 +156,40 @@
   </div>
 </div>
 </script>
+<script type="text/x-template" id="profile-template">
+<div>
+  <main-menu></main-menu>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 offset-md-3 mt-3">
+        <div class="card">
+          <div class="card-header">
+            <div contenteditable="true" class="text-left text-dark">Joe Bloggs</div>
+          </div>
+          <img class="card-img-top" src="http://via.placeholder.com/400x200" alt="Card image cap">
+          
+          <div class="card-body bg-dark">
+            <hr>	
+            <label for="profile-pic">Upload profile picture</label>
+            <input class="text-center" type="file" id="profile-pic" name="profile-pic">
+            <hr>
+            <p contenteditable="true" class="card-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+            <hr>
+            <input name="accept-messages" id="accept-messages" type="checkbox">
+            <label for="accept-messages">Accept messages</label>
+            <a href="#" class="float-right text-secondary"><i class="fa fa-floppy-o fa-2x" aria-hidden="true"></i><br><small class="float-right">Save</small></a>
+          </div>
+        </div>
+      </div>
+	</div>
+  </div>
+</div>
+</script>
+
+<footer class="mt-3">
+  <p class="text-center"><a class="text-light" href="https://jipadvisor.com/">J|A</a></p>
+</footer>
+
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>

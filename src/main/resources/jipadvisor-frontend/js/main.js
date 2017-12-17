@@ -2,6 +2,10 @@ var defaultView = {
   template: '#default-template'
 }
 
+var profileView = {
+    template: '#profile-template'
+}
+
 var loginView = {
   template: '#login-template',
   data: function () {
@@ -23,11 +27,11 @@ var loginView = {
       var user = {email:this.email, password:this.password};
       this.$http.post('/login', user).then(function (response){
     	var userDetails = response.body
-        localStorage.setItem('token',userDetails.token)
-        Vue.http.headers.common['token'] = userDetails.token
-        this.$store.commit('loggedIn', true)
-        this.$store.commit('email', userDetails.email)
-        router.push('profiles')
+      localStorage.setItem('token',userDetails.token)
+      Vue.http.headers.common['token'] = userDetails.token
+      this.$store.commit('loggedIn', true)
+      this.$store.commit('email', userDetails.email)
+      router.push('profiles')
       }, response => {
         this.email = ''
         this.password = ''
@@ -127,6 +131,10 @@ var router = new VueRouter({
   {
     path: '/profiles',
     component: profilesView
+  },
+  {
+    path: '/profile',
+    component: profileView
   }
   ]
 });
@@ -156,8 +164,14 @@ const app = new Vue({
   store,
   beforeCreate: function () {
     var token = localStorage.getItem('token')
-    if(token) {
-      Vue.http.headers.common['token'] = token
-    }
-  },
+    if(!token)
+      return
+    
+    Vue.http.headers.common['token'] = token
+    this.$http.get('/user').then(function (response){
+      var userDetails = response.body
+      this.$store.commit('loggedIn', true)
+      this.$store.commit('email', userDetails.email)
+    })
+  }
 }).$mount('#app')
